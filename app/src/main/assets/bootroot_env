@@ -1,12 +1,12 @@
 #!/system/bin/sh
-### Bootroot environment. stryker
+### Bootroot environment. stryker - NetHunter Migration
 
 unset LD_PRELOAD
 
 ## Define the owner app package name.
 APP_PGK_NAME=com.zalexdev.stryker
 
-## Define chroot sudo path
+## Define chroot sudo path (Debian/NetHunter compatible)
 CHROOT_EXEC=/usr/bin/sudo
 
 ## Combine android $PATH to chroot $PATH
