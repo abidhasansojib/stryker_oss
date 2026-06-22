@@ -50,7 +50,7 @@ public class Slide3 extends Fragment {
 
     @SuppressLint("SdCardPath")
     private static final String DOWNLOADED_CHROOT_PATH =
-            "/data/data/com.zalexdev.stryker/files/core.tar.gz";
+            "/data/data/com.zalexdev.stryker/files/core.tar.xz";
 
     private static final int NOTIFICATION_ID = 34;
 
@@ -136,7 +136,7 @@ public class Slide3 extends Fragment {
         logCard.setVisibility(View.VISIBLE);
         logRecycler.setVisibility(View.VISIBLE);
         resetStages();
-        setStatus(StatusKind.RUNNING, "Stryker chroot", "Starting...");
+        setStatus(StatusKind.RUNNING, "Stryker NetHunter chroot", "Starting...");
         log(LogLevel.INFO, "Architecture: " + (core.is64Bit() ? "64-bit (arm64-v8a)" : "32-bit (armeabi-v7a)"));
         log(LogLevel.INFO, "Stryker " + BuildConfig.VERSION_NAME + " · build " + BuildConfig.VERSION_CODE);
 
@@ -168,17 +168,17 @@ public class Slide3 extends Fragment {
                     core.deleteFile(DOWNLOADED_CHROOT_PATH);
 
                     markStage(InstallStage.MOUNTING, RowState.ACTIVE);
-                    log(LogLevel.STEP, "Mounting chroot via bootroot");
+                    log(LogLevel.STEP, "Mounting NetHunter chroot via bootroot");
                     core.mountCore();
                     markStage(InstallStage.MOUNTING, RowState.DONE);
-                    log(LogLevel.SUCCESS, "Chroot mounted");
+                    log(LogLevel.SUCCESS, "NetHunter chroot mounted");
 
                     markStage(InstallStage.UPGRADING, RowState.ACTIVE);
-                    log(LogLevel.STEP, "Upgrading Alpine packages");
-                    log(LogLevel.CMD, "apk upgrade -U --no-cache");
-                    core.customChrootCommand("apk upgrade -U --no-cache");
+                    log(LogLevel.STEP, "Updating Debian packages");
+                    log(LogLevel.CMD, "apt-get update && apt-get upgrade -y");
+                    core.customChrootCommand("apt-get update && apt-get upgrade -y");
                     markStage(InstallStage.UPGRADING, RowState.DONE);
-                    log(LogLevel.SUCCESS, "Alpine packages up to date");
+                    log(LogLevel.SUCCESS, "Debian packages up to date");
 
                     markStage(InstallStage.DEPLOYING_EXPLOITS, RowState.ACTIVE);
                     log(LogLevel.STEP, "Deploying built-in exploits");
@@ -201,7 +201,7 @@ public class Slide3 extends Fragment {
                     log(LogLevel.SUCCESS, "Version marker written");
 
                     markStage(InstallStage.DONE, RowState.DONE);
-                    setStatus(StatusKind.SUCCESS, "Stryker chroot",
+                    setStatus(StatusKind.SUCCESS, "Stryker NetHunter chroot",
                             "Installation complete — moving on...");
                     log(LogLevel.SUCCESS, "All stages passed");
 
@@ -225,7 +225,7 @@ public class Slide3 extends Fragment {
     }
 
     private void failWith(String reason) {
-        setStatus(StatusKind.FAILED, "Stryker chroot", reason);
+        setStatus(StatusKind.FAILED, "Stryker NetHunter chroot", reason);
         log(LogLevel.ERROR, reason);
         runOnUi(() -> {
             progress.setIndeterminate(false);
@@ -356,7 +356,7 @@ public class Slide3 extends Fragment {
         notification.setContentText(context.getResources().getString(R.string.installing_core));
         notification.setProgress(100, 0, true);
         notificationManager.notify(NOTIFICATION_ID, notification.build());
-        core.customCommand(Core.BUSYBOX + " tar -xzf " + DOWNLOADED_CHROOT_PATH + " -C /data/local/stryker/");
+        core.customCommand(Core.BUSYBOX + " tar -xJf " + DOWNLOADED_CHROOT_PATH + " -C /data/local/stryker/");
         return core.checkFolder("/data/local/stryker/release/bin/");
     }
 
