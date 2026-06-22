@@ -2,10 +2,10 @@ package com.zalexdev.stryker.appintro.install;
 
 public enum InstallStage {
     PREPARING("Preparing storage layout"),
-    DOWNLOADING("Downloading chroot"),
-    UNPACKING("Unpacking chroot"),
-    MOUNTING("Mounting chroot"),
-    UPGRADING("Refreshing Alpine packages"),
+    DOWNLOADING("Downloading NetHunter chroot"),
+    UNPACKING("Unpacking NetHunter chroot"),
+    MOUNTING("Mounting NetHunter chroot"),
+    UPGRADING("Updating Debian packages"),
     DEPLOYING_EXPLOITS("Copying built-in exploits"),
     FINALIZING("Writing version marker"),
     DONE("Installation complete");
